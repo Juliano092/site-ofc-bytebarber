@@ -24,7 +24,7 @@
         }
     </script>
 
-    <link rel="stylesheet" href="login.css">
+    @vite(['resources/css/login.css'])
 </head>
 
 <body class="bg-fundo">
@@ -54,7 +54,20 @@
                 <p class="mt-2 text-texto-cinza">Programando o seu melhor Visual</p>
             </div>
 
-            <form action="#" method="POST" class="space-y-6">
+            <form action="{{ route('login') }}" method="POST" class="space-y-6">
+                @csrf
+
+                <!-- Exibir erros de validação -->
+                @if ($errors->any())
+                    <div class="bg-red-500/20 border border-red-500 text-red-200 px-4 py-3 rounded-lg">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-texto-cinza" fill="none"

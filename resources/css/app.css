@@ -1,3 +1,54 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Theme Transition */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Dark Mode Overrides */
+.dark {
+    color-scheme: dark;
+}
+
+.light {
+    color-scheme: light;
+}
+
+/* Custom scrollbar for dark mode */
+.dark ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Light mode scrollbar */
+.light ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.light ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+.light ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
