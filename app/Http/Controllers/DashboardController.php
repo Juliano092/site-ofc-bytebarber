@@ -96,7 +96,13 @@ class DashboardController extends Controller
                 ->where('status', 'completed')
                 ->sum('price'),
             'pending_appointments' => Appointment::where('barbershop_id', $barbershop->id)
-                ->where('status', 'scheduled')
+                ->where('status', 'pending')
+                ->count(),
+            'cancellation_requests' => Appointment::where('barbershop_id', $barbershop->id)
+                ->where('cancellation_requested', true)
+                ->count(),
+            'reschedule_requests' => Appointment::where('barbershop_id', $barbershop->id)
+                ->where('reschedule_requested', true)
                 ->count()
         ];
 

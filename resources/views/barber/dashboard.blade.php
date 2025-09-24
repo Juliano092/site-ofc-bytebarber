@@ -1,6 +1,14 @@
 <x-app-layout>
-    <div
-        class="dark:bg-gradient-to-br dark:from-gray-900 dark:via-slate-900 dark:to-gray-800 bg-gradient-to-br from-slate-100 via-gray-50 to-slate-200 min-h-screen transition-all duration-300">
+    <div class="dark:bg-gradient-to-br dark:from-gray-900 dark:via-slate-900 dark:to-gray-8                                                    <span class="
+        px-2 py-1 text-xs font-semibold rounded-full @if($appointment->status === 'completed') bg-gradient-to-r
+        from-emerald-500 to-green-500 text-white @elseif($appointment->status === 'scheduled') bg-gradient-to-r
+        from-blue-500 to-indigo-500 text-white @elseif($appointment->status === 'pending') bg-gradient-to-r
+        from-yellow-500 to-orange-500 text-white @elseif($appointment->status === 'in_progress') bg-gradient-to-r
+        from-purple-500 to-pink-500 text-white @elseif($appointment->status === 'cancelled') bg-gradient-to-r from-red-500
+        to-pink-500 text-white @elseif($appointment->status === 'rejected') bg-gradient-to-r from-red-600 to-red-700
+        text-white @else bg-gradient-to-r from-gray-500 to-slate-500 text-white @endif">
+        {{ $appointment->status_in_portuguese }}
+        </span>radient-to-br from-slate-100 via-gray-50 to-slate-200 min-h-screen transition-all duration-300">
         <!-- Header integrado ao conteúdo -->
         <div class="pt-8 pb-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -25,7 +33,8 @@
                             <p class="dark:text-amber-400 text-teal-700 text-sm font-medium uppercase tracking-wider">
                                 Esta Semana</p>
                             <p class="dark:text-white text-slate-800 text-3xl font-bold mt-2">
-                                {{ $weeklyStats['total_appointments'] }}</p>
+                                {{ $weeklyStats['total_appointments'] }}
+                            </p>
                             <p class="dark:text-gray-400 text-slate-600 text-xs">agendamentos</p>
                         </div>
                         <div
@@ -84,10 +93,11 @@
                         @if($todayAppointments->count() > 0)
                             <div class="space-y-4">
                                 @foreach($todayAppointments as $appointment)
-                                    <div class="bg-gradient-to-r from-gray-800 to-slate-700 border-2 rounded-2xl p-4 hover:shadow-xl transition-all duration-300 transform hover:scale-105
-                                                                        @if($appointment->status === 'completed') border-emerald-400 shadow-emerald-400/20
-                                                                        @elseif($appointment->scheduled_at->isPast() && $appointment->status === 'scheduled') border-red-400 shadow-red-400/20
-                                                                        @else border-indigo-400 shadow-indigo-400/20 @endif">
+                                    <div
+                                        class="bg-gradient-to-r from-gray-800 to-slate-700 border-2 rounded-2xl p-4 hover:shadow-xl transition-all duration-300 transform hover:scale-105
+                                                                                @if($appointment->status === 'completed') border-emerald-400 shadow-emerald-400/20
+                                                                                @elseif($appointment->scheduled_at->isPast() && $appointment->status === 'scheduled') border-red-400 shadow-red-400/20
+                                                                                @else border-indigo-400 shadow-indigo-400/20 @endif">
 
                                         <div class="flex items-center justify-between mb-3">
                                             <div class="flex items-center space-x-3">
@@ -113,10 +123,10 @@
                                                 </p>
                                                 <span
                                                     class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                                                    @if($appointment->status === 'completed') bg-gradient-to-r from-emerald-500 to-green-500 text-white
-                                                                                    @elseif($appointment->status === 'scheduled') bg-gradient-to-r from-blue-500 to-indigo-500 text-white
-                                                                                    @elseif($appointment->status === 'cancelled') bg-gradient-to-r from-red-500 to-pink-500 text-white
-                                                                                    @else bg-gradient-to-r from-gray-500 to-slate-500 text-white @endif">
+                                                                                            @if($appointment->status === 'completed') bg-gradient-to-r from-emerald-500 to-green-500 text-white
+                                                                                            @elseif($appointment->status === 'scheduled') bg-gradient-to-r from-blue-500 to-indigo-500 text-white
+                                                                                            @elseif($appointment->status === 'cancelled') bg-gradient-to-r from-red-500 to-pink-500 text-white
+                                                                                            @else bg-gradient-to-r from-gray-500 to-slate-500 text-white @endif">
                                                     {{ ucfirst($appointment->status) }}
                                                 </span>
                                             </div>

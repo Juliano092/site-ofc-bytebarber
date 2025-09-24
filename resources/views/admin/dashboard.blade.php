@@ -113,7 +113,29 @@
                             <div class="text-3xl font-bold dark:text-orange-400 text-teal-600">
                                 {{ $dashboardStats['pending_appointments'] }}
                             </div>
-                            <div class="dark:text-white text-gray-600 text-sm">Agendamentos Pendentes</div>
+                            <div class="dark:text-white text-gray-600 text-sm">Aguardando Aprovação</div>
+                        </div>
+                    </div>
+
+                    <!-- Cards de Solicitações -->
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div
+                            class="text-center dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-4 border dark:border-red-400/30 border-red-500/30">
+                            <div class="text-2xl font-bold dark:text-red-400 text-red-600">
+                                {{ $dashboardStats['cancellation_requests'] }}
+                            </div>
+                            <div class="dark:text-red-200 text-red-700 text-xs font-medium">
+                                <i class="fas fa-times mr-1"></i>Cancelamentos
+                            </div>
+                        </div>
+                        <div
+                            class="text-center dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-4 border dark:border-blue-400/30 border-blue-500/30">
+                            <div class="text-2xl font-bold dark:text-blue-400 text-blue-600">
+                                {{ $dashboardStats['reschedule_requests'] }}
+                            </div>
+                            <div class="dark:text-blue-200 text-blue-700 text-xs font-medium">
+                                <i class="fas fa-calendar-alt mr-1"></i>Reagendamentos
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,9 +159,61 @@
                             class="block w-full dark:bg-gradient-to-r dark:from-amber-600 dark:to-amber-700 dark:hover:from-amber-700 dark:hover:to-amber-800 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 dark:text-black text-white font-semibold py-2 px-4 rounded-xl text-center transition-all duration-200 transform hover:scale-105 shadow-lg">
                             <i class="fas fa-list mr-2"></i>Serviços
                         </a>
+                        <a href="{{ route('admin.settings') }}"
+                            class="block w-full dark:bg-gradient-to-r dark:from-purple-600 dark:to-purple-700 dark:hover:from-purple-700 dark:hover:to-purple-800 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 dark:text-white text-white font-semibold py-2 px-4 rounded-xl text-center transition-all duration-200 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-cog mr-2"></i>Configurações
+                        </a>
                     </div>
                 </div>
             </div>
+
+            <!-- Solicitações Pendentes -->
+            @if($dashboardStats['cancellation_requests'] > 0 || $dashboardStats['reschedule_requests'] > 0)
+                <div
+                    class="dark:bg-gradient-to-br dark:from-gray-900 dark:to-black bg-gradient-to-br from-white to-gray-100 border-2 dark:border-yellow-500 border-yellow-600 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 mb-8">
+                    <div
+                        class="px-6 py-4 dark:bg-gradient-to-r dark:from-yellow-600 dark:to-yellow-700 bg-gradient-to-r from-yellow-600 to-yellow-700 border-b dark:border-yellow-400/30 border-yellow-500/30">
+                        <h3 class="dark:text-black text-white text-lg font-bold">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>Solicitações Pendentes - Requer Atenção
+                        </h3>
+                        <p class="dark:text-black/70 text-white/80 text-sm mt-1">
+                            Clientes aguardando resposta sobre cancelamentos e reagendamentos
+                        </p>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @if($dashboardStats['cancellation_requests'] > 0)
+                                <div
+                                    class="text-center p-4 bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 rounded-xl border border-red-200 dark:border-red-700">
+                                    <i class="fas fa-times text-3xl text-red-600 dark:text-red-400 mb-2"></i>
+                                    <h4 class="font-semibold text-red-800 dark:text-red-300">Cancelamentos</h4>
+                                    <p class="text-2xl font-bold text-red-600 dark:text-red-400">
+                                        {{ $dashboardStats['cancellation_requests'] }}</p>
+                                    <a href="{{ route('admin.appointments.index', ['filter' => 'cancellation_requests']) }}"
+                                        class="inline-block mt-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm transition-colors">
+                                        Ver Solicitações
+                                    </a>
+                                </div>
+                            @endif
+
+                            @if($dashboardStats['reschedule_requests'] > 0)
+                                <div
+                                    class="text-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-xl border border-blue-200 dark:border-blue-700">
+                                    <i class="fas fa-calendar-alt text-3xl text-blue-600 dark:text-blue-400 mb-2"></i>
+                                    <h4 class="font-semibold text-blue-800 dark:text-blue-300">Reagendamentos</h4>
+                                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                        {{ $dashboardStats['reschedule_requests'] }}</p>
+                                    <a href="{{ route('admin.appointments.index', ['filter' => 'reschedule_requests']) }}"
+                                        class="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm transition-colors">
+                                        Ver Solicitações
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <!-- Agendamentos Recentes -->
             <div
@@ -202,11 +276,14 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                                                        @if($appointment->status === 'completed') bg-gradient-to-r from-emerald-500 to-green-500 text-white
-                                                                                        @elseif($appointment->status === 'scheduled') bg-gradient-to-r from-blue-500 to-indigo-500 text-white
-                                                                                        @elseif($appointment->status === 'cancelled') bg-gradient-to-r from-red-500 to-pink-500 text-white
-                                                                                        @else bg-gradient-to-r from-gray-500 to-slate-500 text-white @endif">
-                                                {{ ucfirst($appointment->status) }}
+                                                                @if($appointment->status === 'completed') bg-gradient-to-r from-emerald-500 to-green-500 text-white
+                                                                @elseif($appointment->status === 'scheduled') bg-gradient-to-r from-blue-500 to-indigo-500 text-white
+                                                                @elseif($appointment->status === 'pending') bg-gradient-to-r from-yellow-500 to-orange-500 text-white
+                                                                @elseif($appointment->status === 'in_progress') bg-gradient-to-r from-purple-500 to-pink-500 text-white
+                                                                @elseif($appointment->status === 'cancelled') bg-gradient-to-r from-red-500 to-pink-500 text-white
+                                                                @elseif($appointment->status === 'rejected') bg-gradient-to-r from-red-600 to-red-700 text-white
+                                                                @else bg-gradient-to-r from-gray-500 to-slate-500 text-white @endif">
+                                                {{ $appointment->status_in_portuguese }}
                                             </span>
                                         </td>
                                         <td
