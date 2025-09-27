@@ -83,9 +83,7 @@ class DashboardController extends Controller
         $barbershop = $user->barbershop;
 
         $dashboardStats = [
-            'total_clients' => User::where('barbershop_id', $barbershop->id)
-                ->where('user_type', 'client')
-                ->count(),
+            'total_clients' => User::where('barbershop_id', $barbershop->id)->count(),
             'total_barbers' => Barber::where('barbershop_id', $barbershop->id)->count(),
             'total_services' => Service::where('barbershop_id', $barbershop->id)->count(),
             'today_appointments' => Appointment::where('barbershop_id', $barbershop->id)
