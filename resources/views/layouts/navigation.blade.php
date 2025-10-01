@@ -19,16 +19,6 @@
                         Dashboard
                     </x-nav-link>
                 </div>
-
-                @if (Auth::user()->user_type === 'admin')
-                <!-- Cliente Link direto -->
-                <div class="hidden sm:flex sm:items-center sm:ml-10">
-                    <x-nav-link :href="route('admin.clientes.index')" :active="request()->routeIs('admin.clientes.*')"
-                        class="text-gray-50 hover:text-emerald-300 dark:hover:text-indigo-300 transition-colors duration-200">
-                        Cliente
-                    </x-nav-link>
-                </div>
-                @endif
             </div>
 
             <!-- Theme Toggle and Settings Dropdown -->
@@ -64,6 +54,7 @@
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
+
                                 <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault(); this.closest('form').submit();"
                                     class="text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-indigo-800">
@@ -104,14 +95,6 @@
                 class="text-gray-50 hover:text-emerald-300 dark:hover:text-indigo-300">
                 Dashboard
             </x-responsive-nav-link>
-
-            @if (Auth::user()->user_type === 'admin')
-            <x-responsive-nav-link :href="route('admin.clientes.index')"
-                :active="request()->routeIs('admin.clientes.*')"
-                class="text-gray-50 hover:text-emerald-300 dark:hover:text-indigo-300">
-                Cliente
-            </x-responsive-nav-link>
-            @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -130,6 +113,7 @@
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
+
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();"
                         class="text-gray-50 hover:text-emerald-300 dark:hover:text-indigo-300">

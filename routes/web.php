@@ -5,8 +5,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Admin\ClienteController;
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -40,7 +38,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Dashboard Admin
-
     Route::middleware('user.type:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
         Route::resource('services', \App\Http\Controllers\ServiceController::class);
