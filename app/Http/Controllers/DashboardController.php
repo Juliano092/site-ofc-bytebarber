@@ -16,6 +16,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
+
         switch ($user->user_type) {
             case 'admin':
                 return redirect()->route('admin.dashboard');
@@ -77,41 +78,28 @@ class DashboardController extends Controller
         return view('barber.dashboard', compact('todayAppointments', 'weeklyStats'));
     }
 
+    // Em app/Http/Controllers/DashboardController.php
+
     public function adminDashboard()
     {
-        $user = Auth::user();
-        $barbershop = $user->barbershop;
-
-        $dashboardStats = [
-            'total_clients' => User::where('barbershop_id', $barbershop->id)
-                ->where('user_type', 'client')
-                ->count(),
-            'total_barbers' => Barber::where('barbershop_id', $barbershop->id)->count(),
-            'total_services' => Service::where('barbershop_id', $barbershop->id)->count(),
-            'today_appointments' => Appointment::where('barbershop_id', $barbershop->id)
-                ->whereDate('scheduled_at', today())
-                ->count(),
-            'monthly_revenue' => Appointment::where('barbershop_id', $barbershop->id)
-                ->whereMonth('scheduled_at', now()->month)
-                ->where('status', 'completed')
-                ->sum('price'),
-            'pending_appointments' => Appointment::where('barbershop_id', $barbershop->id)
-                ->where('status', 'pending')
-                ->count(),
-            'cancellation_requests' => Appointment::where('barbershop_id', $barbershop->id)
-                ->where('cancellation_requested', true)
-                ->count(),
-            'reschedule_requests' => Appointment::where('barbershop_id', $barbershop->id)
-                ->where('reschedule_requested', true)
-                ->count()
+        // Este painel agora é para o dono do sistema, então buscamos dados GLOBAIS.
+        $estatisticasGerais = [
+            'total_clientes' => \App\Models\User::where('user_type', 'client')->count(),
+            'total_barbeiros' => \App\Models\Barber::count(),
+            'agendamentos_hoje' => \App\Models\Appointment::whereDate('scheduled_at', today())->count(),
+            'faturamento_total' => \App\Models\Appointment::where('status', 'completed')->sum('price'),
+            'total_servicos' => \App\Models\Service::count(),
+            'agendamentos_pendentes' => \App\Models\Appointment::where('status', 'pending')->count(),
+            'solicitacoes_cancelamento' => \App\Models\Appointment::where('cancellation_requested', true)->count(),
+            'solicitacoes_reagendamento' => \App\Models\Appointment::where('reschedule_requested', true)->count(),
+            'total_barbearias' => \App\Models\Barbershop::count(), // Adicionei este como um bônus
         ];
 
-        $recentAppointments = Appointment::where('barbershop_id', $barbershop->id)
-            ->with(['client', 'barber.user', 'service'])
+        $ultimosAgendamentos = \App\Models\Appointment::with(['client', 'barber.user', 'service', 'barbershop'])
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->get();
 
-        return view('admin.dashboard', compact('dashboardStats', 'recentAppointments'));
+        return view('admin.dashboard', compact('estatisticasGerais', 'ultimosAgendamentos'));
     }
 }

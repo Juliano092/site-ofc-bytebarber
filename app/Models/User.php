@@ -12,12 +12,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-     * Informa ao Laravel que a tabela para este modelo é 'users'.
-     */
-    protected $table = 'users';
-
-    /**
-     * Os atributos que podem ser preenchidos em massa.
+     * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
@@ -26,15 +21,12 @@ class User extends Authenticatable
         'email',
         'password',
         'user_type',
-        'phone',
-        'preferences',
-        'avatar',
         'barbershop_id',
-        'active'
+        'celular',
     ];
 
     /**
-     * Os atributos que devem ser escondidos.
+     * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
@@ -42,17 +34,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    /**
-     * Pega a senha para o usuário.
-     * Laravel usa a coluna 'password' por padrão
-     *
-     * @return string
-     */
-    public function getAuthPassword()
-    {
-        return $this->password; // Usa a coluna 'password' da tabela
-    }
 
     /**
      * Get the attributes that should be cast.
@@ -64,23 +45,14 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'active' => 'boolean'
         ];
     }
 
     /**
-     * Relacionamento com Barbershop
+     * Um usuário pertence a uma barbearia.
      */
     public function barbershop()
     {
         return $this->belongsTo(Barbershop::class);
-    }
-
-    /**
-     * Relacionamento com Barber (quando o usuário é barbeiro)
-     */
-    public function barber()
-    {
-        return $this->hasOne(Barber::class);
     }
 }

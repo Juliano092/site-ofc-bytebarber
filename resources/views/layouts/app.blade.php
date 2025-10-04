@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    x-data="{ darkMode: localStorage.getItem('dark') === 'true' }"
+    x-init="$watch('darkMode', val => localStorage.setItem('dark', val))" x-bind:class="{ 'dark': darkMode }">
 
 <head>
     <meta charset="utf-8">
@@ -10,45 +12,36 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <script>
-        // Initialize theme from localStorage or default to dark
-        if (localStorage.theme === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-            document.documentElement.classList.remove('dark')
-            document.documentElement.classList.add('light')
-        } else {
-            document.documentElement.classList.add('dark')
-            document.documentElement.classList.remove('light')
-        }
-    </script>
 </head>
 
-{{-- CORREÇÃO DEFINITIVA: As classes de fundo foram adicionadas diretamente aqui na tag
+<body class="font-sans antialiased">
+    {{-- A MUDANÇA 1 ESTÁ AQUI: trocamos min-h-screen por h-screen para fixar a altura --}}
+    <div class="h-screen bg-gray-100 dark:bg-gray-900 flex">
 
-<body> --}}
+        @include('layouts.navigation-sidebar')
 
-    <body
-        class="font-sans antialiased transition-colors duration-300 dark:bg-gradient-to-br dark:from-gray-900 dark:via-slate-900 dark:to-gray-800 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100">
+        {{-- A MUDANÇA 2 ESTÁ AQUI: adicionamos overflow-hidden para conter os elementos filhos --}}
+        <div class="flex-1 flex flex-col overflow-hidden">
 
-        <div class="min-h-screen">
-            @include('layouts.navigation')
+            @include('layouts.topbar')
 
-            @isset($header)
-                <header class="bg-transparent">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            @if (isset($header))
+            <div class="bg-white dark:bg-gray-800 shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </div>
+            @endif
 
-            <main>
+            <main class="flex-1 overflow-y-auto">
                 {{ $slot }}
             </main>
         </div>
-    </body>
+    </div>
+</body>
 
 </html>

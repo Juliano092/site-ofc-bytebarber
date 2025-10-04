@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -45,6 +46,10 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('appointments', AppointmentController::class);
         Route::post('/appointments/{appointment}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
         Route::post('/appointments/{appointment}/reject', [AppointmentController::class, 'reject'])->name('appointments.reject');
+        Route::resource('barbearias', \App\Http\Controllers\Admin\BarbershopController::class)->names('barbershops');
+
+
+        Route::resource('users', UserController::class);
 
         // Rotas para processar solicitações de clientes
         Route::post('/appointments/{appointment}/approve-cancellation', [AppointmentController::class, 'approveCancellation'])->name('appointments.approve-cancellation');
