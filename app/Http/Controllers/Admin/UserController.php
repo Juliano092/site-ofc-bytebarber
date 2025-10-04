@@ -40,7 +40,7 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
-            'celular' => ['nullable', 'string', 'max:20'],
+            'phone' => ['nullable', 'string', 'max:20'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'user_type' => ['required', 'in:admin,barber,client'], // Garante que o tipo seja válido
             'barbershop_id' => ['nullable', 'exists:barbershops,id'], // Garante que a barbearia exista
@@ -50,7 +50,7 @@ class UserController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'celular' => $request->celular,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password), // Criptografa a senha
             'user_type' => $request->user_type,
             'barbershop_id' => $request->barbershop_id,
